@@ -1,3 +1,4 @@
+
 from display import *
 from matrix import *
 from math import *
@@ -11,12 +12,28 @@ def add_box( points, x, y, z, width, height, depth ):
     add_edge(points, x + width, y, z - depth, x + width, y, z)
     #p0 to p3
     add_edge(points, x, y, z, x + width, y, z)
+    #p0 to p4
+    add_edge(points, x, y, z, x, y - height, z)
+    #p4 to p7
+    add_edge(points, x, y - height, z, x + width, y - height, z)
+    #p3 to p7
+    add_edge(points, x + width, y, z, x + width, y - height, z)
+    #p1 to p5
+    add_edge(points, x, y, z - depth, x, y - height, z - depth)
+    #p5 to p4
+    add_edge(points, x, y - height, z - depth, x, y - height, z)
+    #p2 to p6
+    add_edge(points, x + width, y, z - depth, x + width, y - height, z - depth)
+    #p5 to p6
+    add_edge(points, x, y - height, z - depth, x + width, y - height, z - depth)
+    #p6 to p7
+    add_edge(points, x + width, y - height, z - depth, x + width, y - height, z)
 
 def add_sphere( points, cx, cy, cz, r, step ):
     pass
 
 def generate_sphere( points, cx, cy, cz, r, step ):
-    pass
+    
 
 def add_torus( points, cx, cy, cz, r0, r1, step ):
     pass

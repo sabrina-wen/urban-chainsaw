@@ -82,7 +82,8 @@ def parse_file( fname, edges, transform, screen, color ):
                       float(args[4]), float(args[5]))
 
         elif line == 'sphere':
-            pass
+            generate_sphere(edges, float(args[0]), float(args[1]),
+                      float(args[2]), float(args[3]))
 
         elif line == 'torus':
             pass

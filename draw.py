@@ -30,7 +30,15 @@ def add_box( points, x, y, z, width, height, depth ):
     add_edge(points, x + width, y - height, z - depth, x + width, y - height, z)
 
 def add_sphere( points, cx, cy, cz, r, step ):
-    pass
+    phi = 0
+    theta = 0
+    while(phi < 2 * math.pi):
+        while(theta < 2 * math.pi):
+            x = r*math.cos(theta) + cx
+            y = r*math.sin(theta)*math.cos(phi) + cy
+            z = r*math.sin(theta) - math.sin(phi) + cz
+            phi += step
+            theta += step
 
 def generate_sphere( points, cx, cy, cz, r, step ):
     

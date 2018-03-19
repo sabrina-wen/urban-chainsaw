@@ -30,6 +30,13 @@ def add_box( points, x, y, z, width, height, depth ):
     add_edge(points, x + width, y - height, z - depth, x + width, y - height, z)
 
 def add_sphere( points, cx, cy, cz, r, step ):
+   m = generate_sphere(points, cx, cy, cz, r, step)
+   print_matrix(m)
+   for row in len(m):
+       add_point(points, m[row][0], m[row][1], m[row][2])
+
+def generate_sphere( points, cx, cy, cz, r, step ):
+    points = new_matrix()
     phi = 0
     theta = 0
     while(phi < 2 * math.pi):
@@ -39,9 +46,8 @@ def add_sphere( points, cx, cy, cz, r, step ):
             z = r*math.sin(theta) - math.sin(phi) + cz
             phi += step
             theta += step
-
-def generate_sphere( points, cx, cy, cz, r, step ):
-    
+            add_point(points, x, y, z)
+    return points
 
 def add_torus( points, cx, cy, cz, r0, r1, step ):
     pass

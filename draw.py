@@ -30,30 +30,38 @@ def add_box( points, x, y, z, width, height, depth ):
     add_edge(points, x + width, y - height, z - depth, x + width, y - height, z)
 
 def add_sphere( points, cx, cy, cz, r, step ):
-   m = generate_sphere(points, cx, cy, cz, r, step)
-   print_matrix(m)
-   for row in len(m):
-       add_point(points, m[row][0], m[row][1], m[row][2])
+    m = generate_sphere(points, cx, cy, cz, r, step)
+    for point in m:
+        add_edge(points, point[0], point[1], point[2], point[0] + 1, point[1] + 1, point[2] + 1)
 
 def generate_sphere( points, cx, cy, cz, r, step ):
     points = new_matrix()
     phi = 0
     theta = 0
-    while(phi < 2 * math.pi):
-        while(theta < 2 * math.pi):
-            x = r*math.cos(theta) + cx
-            y = r*math.sin(theta)*math.cos(phi) + cy
-            z = r*math.sin(theta) - math.sin(phi) + cz
-            phi += step
-            theta += step
+    for phi in range(step):
+        for theta in range(step):
+            x = r * math.cos(float(theta) * math.pi / step) + cx
+            y = r * math.sin(float(theta) * math.pi / step) * math.cos(float(phi) * math.pi * 2 / step) + cy
+            z = r * math.sin(float(theta) * math.pi / step) * math.sin(float(phi) * math.pi * 2 / step) + cz
             add_point(points, x, y, z)
     return points
 
 def add_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    m = generate_torus(points, cx, cy, cz, r0, r1, step)
+    for point in m:
+        add_edge(points, point[0], point[1], point[2], point[0] + 1, point[1] + 1, point[2] + 1)
 
 def generate_torus( points, cx, cy, cz, r0, r1, step ):
-    pass
+    points = new_matrix()
+    phi = 0
+    theta = 0
+    for phi in range(step):
+        for theta in range(step):
+            x = math.cos(float(phi) * math.pi * 2 / step) * (r0 * math.cos(float(theta) * math.pi * 2 / step) + r1) + cx
+            y = r0 * math.sin(float(theta) * math.pi * 2 / step) + cy
+            z = -math.sin(float(phi) * math.pi * 2 / step) * (r0 * math.cos(float(theta) * math.pi * 2 / step) + r1) + cz
+            add_point(points, x, y, z)
+    return points
 
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx
@@ -89,23 +97,23 @@ def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
         print 'Need at least 2 points to draw'
         return
-    
+
     point = 0
     while point < len(matrix) - 1:
         draw_line( int(matrix[point][0]),
                    int(matrix[point][1]),
                    int(matrix[point+1][0]),
                    int(matrix[point+1][1]),
-                   screen, color)    
+                   screen, color)
         point+= 2
-        
+
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point(matrix, x0, y0, z0)
     add_point(matrix, x1, y1, z1)
-    
+
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
-    
+
 
 
 
@@ -129,7 +137,7 @@ def draw_line( x0, y0, x1, y1, screen, color ):
     if ( abs(x1-x0) >= abs(y1 - y0) ):
 
         #octant 1
-        if A > 0:            
+        if A > 0:
             d = A + B/2
 
             while x < x1:
